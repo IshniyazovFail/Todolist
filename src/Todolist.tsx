@@ -44,8 +44,7 @@ export function Todolist(props: PropsType) {
     const onCompletedClickHandler = () => props.changeFilter("completed", props.id);
 
     return <div>
-        <h3> <EditableSpan value={props.title} onChange={changeTodolistTitle} />
-           {/* <button onClick={removeTodolist}>x</button>*/}
+        <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
             <IconButton onClick={removeTodolist} aria-label="delete">
                 <DeleteIcon/>
             </IconButton>
@@ -66,13 +65,11 @@ export function Todolist(props: PropsType) {
 
 
                     return <div key={t.id} className={t.isDone ? "is-done" : ""}>
-                        <Checkbox  defaultChecked onChange={onChangeHandler} checked={t.isDone}/>
-                       {/* <input type="checkbox" onChange={onChangeHandler} checked={t.isDone}/>*/}
-                        <EditableSpan value={t.title} onChange={onTitleChangeHandler} />
+                        <Checkbox  onChange={onChangeHandler} checked={t.isDone}/>
+                        <EditableSpan value={t.title} onChange={onTitleChangeHandler}/>
                         <IconButton onClick={onClickHandler} aria-label="delete">
                             <DeleteIcon/>
                         </IconButton>
-                       {/* <button onClick={onClickHandler}>x</button>*/}
                     </div>
                 })
             }
@@ -85,8 +82,8 @@ export function Todolist(props: PropsType) {
                     variant={props.filter === 'active' ? "outlined" : "text"}
                     onClick={onActiveClickHandler}>Active
             </Button>
-            <Button  color='secondary'
-                     variant={props.filter === 'completed' ? "outlined" : "text"}
+            <Button color='secondary'
+                    variant={props.filter === 'completed' ? "outlined" : "text"}
                     onClick={onCompletedClickHandler}>Completed
             </Button>
         </div>
