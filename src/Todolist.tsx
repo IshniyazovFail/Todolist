@@ -5,7 +5,6 @@ import {EditableSpan} from './EditableSpan';
 import {Delete} from "@mui/icons-material";
 import {Button, Checkbox, IconButton} from "@mui/material";
 
-
 export type TaskType = {
     id: string
     title: string
@@ -80,7 +79,7 @@ export function Todolist(props: PropsType) {
         <div>
             <Button variant={props.filter === 'all' ? 'outlined' : 'text'}
                     onClick={onAllClickHandler}
-                    color={'success'}
+
             >All
             </Button>
             <Button variant={props.filter === 'active' ? 'outlined' : 'text'}
