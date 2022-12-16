@@ -10,6 +10,7 @@ export const GetTodolists = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
         todolistAPI.getTodolist().then(res=>{
+            debugger
                 setState(res.data)
         })
 
@@ -64,6 +65,7 @@ export const CreateTasks = () => {
     const todolistID='b627ba4f-657b-4088-8623-8437ab660941'
     useEffect(() => {
         todolistAPI.createTask(todolistID,'new task').then(res=>{
+            debugger
             setState(res.data)
         })
 
