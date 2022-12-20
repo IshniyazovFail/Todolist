@@ -3,12 +3,13 @@ import {AddItemForm} from './AddItemForm'
 import {EditableSpan} from './EditableSpan'
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import { Delete } from '@mui/icons-material';
+import {Delete} from '@mui/icons-material';
 import {Task} from './Task'
 import {TaskStatuses, TaskType} from './api/todolists-api'
 import {FilterValuesType} from './state/todolists-reducer'
 import {useAppDispatch} from "./hooks/hooks";
 import {fetchTaskTC} from "./state/tasks-reducer";
+import {RequestStatusType} from "./app/app-reducer";
 
 type PropsType = {
     id: string
@@ -22,12 +23,13 @@ type PropsType = {
     removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
+    entityStatus: RequestStatusType
 
 }
 
 export const Todolist = React.memo(function (props: PropsType) {
     console.log('Todolist called')
-    const dispatch=useAppDispatch()
+    const dispatch = useAppDispatch()
 
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id)
@@ -54,23 +56,24 @@ export const Todolist = React.memo(function (props: PropsType) {
         tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(fetchTaskTC(props.id))
-    },[])
+    }, [])
     return <div>
-        <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
-            <IconButton onClick={removeTodolist}>
+        <h3><EditableSpan disabled={props.entityStatus==='loading'} value={props.title} onChange={changeTodolistTitle}/>
+            <IconButton disabled={props.entityStatus === 'loading'} onClick={removeTodolist}>
                 <Delete/>
             </IconButton>
         </h3>
-        <AddItemForm addItem={addTask}/>
+        <AddItemForm disabled={props.entityStatus === 'loading'} addItem={addTask}/>
         <div>
             {
                 tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.id}
-                                          removeTask={props.removeTask}
-                                          changeTaskTitle={props.changeTaskTitle}
-                                          changeTaskStatus={props.changeTaskStatus}
-                    />)
+                                                removeTask={props.removeTask}
+                                                changeTaskTitle={props.changeTaskTitle}
+                                                changeTaskStatus={props.changeTaskStatus}
+                                                entityStatus={t.entityStatus}
+                />)
             }
         </div>
         <div style={{paddingTop: '10px'}}>
