@@ -1,14 +1,14 @@
-import {TasksStateType} from '../app/App';
-import {TaskStatuses, TaskType, todolistsAPI} from '../api/todolists-api'
-import {AppThunkType} from "./store";
+import {TasksStateType} from '../../app/App';
+import {TaskStatuses, TaskType, todolistsAPI} from '../../api/todolists-api'
+import {AppThunkType} from "../../app/store";
 import {
     AddTodolistActionType,
     changeTodolistEntityStatusAC,
     RemoveTodolistActionType,
     SetTodolistActionType
 } from "./todolists-reducer";
-import {RequestStatusType, setStatusAC} from "../app/app-reducer";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {RequestStatusType, setStatusAC} from "../../app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 
 export type TaskActionsType =

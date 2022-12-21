@@ -1,8 +1,8 @@
-import {TaskActionsType, tasksReducer} from './tasks-reducer';
-import {TodoListActionsType, todolistsReducer} from './todolists-reducer';
+import {TaskActionsType, tasksReducer} from '../features/TodolistsList/tasks-reducer';
+import {TodoListActionsType, todolistsReducer} from '../features/TodolistsList/todolists-reducer';
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {AppActionsType, appReducer} from "../app/app-reducer";
+import {AppActionsType, appReducer} from "./app-reducer";
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
