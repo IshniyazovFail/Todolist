@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import Grid from "@mui/material/Grid";
 import {AddItemForm} from "../../AddItemForm";
 import Paper from "@mui/material/Paper";
@@ -8,17 +8,26 @@ import {addTaskTC, removeTaskTC, updateTaskStatusTC, updateTaskTitleTC} from "./
 import {TaskStatuses} from "../../api/todolists-api";
 import {
     addTodolistTC,
-    changeTodolistFilterAC,
+    changeTodolistFilterAC, fetchTodoListTC,
     FilterValuesType,
     removeTodolistTC,
     updateTodolistTitleTC
 } from "./todolists-reducer";
+import {Navigate} from "react-router-dom";
 
 export const TodolistsList:React.FC = () => {
 
     const todolists = useAppSelector(state => state.todolists)
     const tasks = useAppSelector(state => state.tasks)
+    const isLoggedIn=useAppSelector(state=>state.auth.isLoggedIn)
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if(!isLoggedIn){
+            return;
+        }
+        dispatch(fetchTodoListTC())
+    }, [])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
         dispatch(removeTaskTC(todolistId, id));
@@ -54,7 +63,9 @@ export const TodolistsList:React.FC = () => {
     }, [dispatch]);
 
 
-
+if(!isLoggedIn){
+    return <Navigate to={'/login'}/>
+}
     return (
         <>
             <Grid container style={{padding: '20px'}}>

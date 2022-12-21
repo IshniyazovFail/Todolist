@@ -7,14 +7,15 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import {Menu} from '@mui/icons-material';
-import {fetchTodoListTC} from '../features/TodolistsList/todolists-reducer'
 import {TaskType} from '../api/todolists-api'
 import {useAppDispatch, useAppSelector} from "../hooks/hooks";
-import {LinearProgress} from "@mui/material";
+import {CircularProgress, LinearProgress} from "@mui/material";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackBar";
 import {TodolistsList} from "../features/TodolistsList/TodolistsList";
 import {Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
+import {initializeAppTC} from "./app-reducer";
+import {logoutTC} from "../features/Login/auth-reducer";
 
 
 export type TasksStateType = {
@@ -23,11 +24,23 @@ export type TasksStateType = {
 
 function App() {
     const status = useAppSelector(state => state.app.status)
+    const isLoggedIn=useAppSelector(state=>state.auth.isLoggedIn)
     const dispatch = useAppDispatch();
+    const isInitialized=useAppSelector(state=> state.app.isInitialized)
 
-    useEffect(() => {
-        dispatch(fetchTodoListTC())
-    }, [])
+useEffect(()=>{
+    dispatch(initializeAppTC())
+},[])
+
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
+    const onclickHandler=()=>{
+        dispatch(logoutTC())
+    }
     return (
         <div className="App">
             <ErrorSnackbar/>
@@ -39,7 +52,7 @@ function App() {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn && <Button onClick={onclickHandler} color="inherit">Logout</Button>}
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
