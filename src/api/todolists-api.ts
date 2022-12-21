@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, {AxiosResponse} from 'axios'
 import {RequestStatusType} from "../app/app-reducer";
 
 const instance = axios.create({
@@ -34,6 +34,12 @@ export const todolistsAPI = {
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+    }
+}
+
+export const authAPI = {
+    login(data: LoginParamsType) {
+        return instance.post<AuthResponseType>('auth/login', data)
     }
 }
 
@@ -78,7 +84,7 @@ export type TaskType = {
     todoListId: string
     order: number
     addedDate: string
-    entityStatus:RequestStatusType
+    entityStatus: RequestStatusType
 }
 export type UpdateTaskModelType = {
     title: string
@@ -92,4 +98,17 @@ type GetTasksResponse = {
     error: string | null
     totalCount: number
     items: TaskType[]
+}
+
+export  type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: boolean
+}
+type AuthResponseType = {
+    resultCode: number
+    messages: [],
+    data: { userId: number },
+    fieldsErrors:[]
 }
