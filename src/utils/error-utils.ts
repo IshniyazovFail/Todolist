@@ -5,16 +5,16 @@ import {AppDispatchType} from "../app/store";
 // generic function
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: AppDispatchType) => {
     if (data.messages.length) {
-        dispatch(setErrorAC(data.messages[0]))
+        dispatch(setErrorAC({error:data.messages[0]}))
     } else {
-        dispatch(setErrorAC('Some error occurred'))
+        dispatch(setErrorAC({error:'Some error occurred'}))
     }
-    dispatch(setStatusAC('failed'))
+    dispatch(setStatusAC({status:'failed'}))
 }
 
 export const handleServerNetworkError = (error: { message: string }, dispatch: AppDispatchType) => {
-    dispatch(setErrorAC(error.message))
-    dispatch(setStatusAC('failed'))
+    dispatch(setErrorAC({error:error.message}))
+    dispatch(setStatusAC({status:'failed'}))
 }
 
 

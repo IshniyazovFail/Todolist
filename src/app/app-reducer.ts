@@ -2,43 +2,43 @@ import {AppThunkType} from "./store";
 import {setIsLoggedInAC} from "../features/Login/auth-reducer";
 import {authAPI} from "../api/todolists-api";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-
 const initialState = {
     status: 'idle' as RequestStatusType,
     error:'' as string||null,
     isInitialized:false
 }
 export type AppActionsType = ReturnType<typeof setStatusAC>|ReturnType<typeof setErrorAC>|ReturnType<typeof setIsInitializedAC>
-type InitialStateType = typeof initialState
 
-export const appReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
-    switch (action.type) {
-        case 'APP/SET-STATUS':return {...state, status: action.status}
-        case "APP/SET-ERROR":return {...state,error: action.error}
-        case "APP/SET-IS-INITIALIZED":return {...state,isInitialized: action.initialized}
-        default:
-            return state
+
+const slice=createSlice({
+    name:"app",
+    initialState:initialState,
+    reducers:{
+        setStatusAC(state,action:PayloadAction<{status:RequestStatusType}>){
+            state.status =action.payload.status
+        },
+        setErrorAC(state,action:PayloadAction<{error:string|null}>){
+            state.error = action.payload.error
+        },
+        setIsInitializedAC(state,action:PayloadAction<{initialized:boolean}>){
+            state.isInitialized = action.payload.initialized
+        }
+
     }
-}
+})
+export const appReducer = slice.reducer
+export const {setStatusAC,setErrorAC,setIsInitializedAC}=slice.actions
 
-export const setStatusAC=(status:RequestStatusType)=>{
-    return { type: 'APP/SET-STATUS',status } as const
-}
-export const setErrorAC=(error:string|null)=>{
-    return {type: 'APP/SET-ERROR',error} as const
-}
-export const setIsInitializedAC=(initialized:boolean)=>{
-    return {type:'APP/SET-IS-INITIALIZED',initialized}as const
-}
 
 export const initializeAppTC = ():AppThunkType => (dispatch) => {
     authAPI.me().then(res => {
-        dispatch(setIsInitializedAC(true))
+        dispatch(setIsInitializedAC({initialized:true}))
         if (res.data.resultCode === 0) {
-            dispatch(setIsLoggedInAC(true));
+            dispatch(setIsLoggedInAC({value:true}));
         } else {
             handleServerAppError(res.data,dispatch)
         }
