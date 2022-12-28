@@ -1,5 +1,5 @@
 import {setStatusAC} from "../../app/app-reducer";
-import {AppThunkType} from "../../app/store";
+import {AppDispatchType} from "../../app/store";
 import {authAPI, LoginParamsType} from "../../api/todolists-api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
@@ -24,7 +24,7 @@ export const authReducer = slice.reducer
 // actions
 export const {setIsLoggedInAC} = slice.actions
 // thunks
-export const loginTC = (data: LoginParamsType):AppThunkType => (dispatch) => {
+export const loginTC = (data: LoginParamsType) => (dispatch:AppDispatchType) => {
     dispatch(setStatusAC({status:'loading'}))
     authAPI.login(data).then(res => {
         if (res.data.resultCode === 0) {
@@ -40,7 +40,7 @@ export const loginTC = (data: LoginParamsType):AppThunkType => (dispatch) => {
     })
 }
 
-export const logoutTC = ():AppThunkType => (dispatch) => {
+export const logoutTC = () => (dispatch:AppDispatchType) => {
     dispatch(setStatusAC({status:'loading'}))
     authAPI.logout()
         .then(res => {

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react'
-import {AddItemForm} from '../../../AddItemForm'
-import {EditableSpan} from '../../../EditableSpan'
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm'
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan'
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import {Delete} from '@mui/icons-material';
@@ -28,7 +28,6 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(function (props: PropsType) {
-    console.log('Todolist called')
     const dispatch = useAppDispatch()
 
     const addTask = useCallback((title: string) => {

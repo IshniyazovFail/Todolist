@@ -1,4 +1,4 @@
-import {AppThunkType} from "./store";
+import {AppDispatchType} from "./store";
 import {setIsLoggedInAC} from "../features/Login/auth-reducer";
 import {authAPI} from "../api/todolists-api";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
@@ -34,7 +34,7 @@ export const appReducer = slice.reducer
 export const {setStatusAC,setErrorAC,setIsInitializedAC}=slice.actions
 
 
-export const initializeAppTC = ():AppThunkType => (dispatch) => {
+export const initializeAppTC = () => (dispatch:AppDispatchType) => {
     authAPI.me().then(res => {
         dispatch(setIsInitializedAC({initialized:true}))
         if (res.data.resultCode === 0) {
