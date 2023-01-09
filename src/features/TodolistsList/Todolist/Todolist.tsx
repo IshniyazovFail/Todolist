@@ -1,13 +1,14 @@
 import React, {useCallback, useEffect} from 'react'
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm'
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan'
-import {Button, IconButton} from '@material-ui/core'
-import {Delete} from '@material-ui/icons'
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import {Delete} from '@mui/icons-material';
 import {Task} from './Task/Task'
 import {TaskStatuses, TaskType} from '../../../api/todolists-api'
 import {FilterValuesType, TodolistDomainType} from '../todolists-reducer'
-import {useDispatch} from 'react-redux'
 import {fetchTasksTC} from '../tasks-reducer'
+import {useAppDispatch} from "../../../app/store";
 
 type PropsType = {
     todolist: TodolistDomainType
@@ -19,17 +20,13 @@ type PropsType = {
     removeTask: (taskId: string, todolistId: string) => void
     removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
-    demo?: boolean
 }
 
-export const Todolist = React.memo(function ({demo = false, ...props}: PropsType) {
+export const Todolist = React.memo(function ({...props}: PropsType) {
     console.log('Todolist called')
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     useEffect(() => {
-        if (demo) {
-            return
-        }
         const thunk = fetchTasksTC(props.todolist.id)
         dispatch(thunk)
     }, [])
@@ -60,7 +57,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
     }
 
     return <div>
-        <h3><EditableSpan value={props.todolist.title} onChange={changeTodolistTitle}/>
+        <h3><EditableSpan disabled={props.todolist.entityStatus==='loading'} value={props.todolist.title} onChange={changeTodolistTitle}/>
             <IconButton onClick={removeTodolist} disabled={props.todolist.entityStatus === 'loading'}>
                 <Delete/>
             </IconButton>
@@ -78,7 +75,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
         <div style={{paddingTop: '10px'}}>
             <Button variant={props.todolist.filter === 'all' ? 'outlined' : 'text'}
                     onClick={onAllClickHandler}
-                    color={'default'}
+                    color={'inherit'}
             >All
             </Button>
             <Button variant={props.todolist.filter === 'active' ? 'outlined' : 'text'}
